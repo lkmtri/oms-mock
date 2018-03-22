@@ -28,9 +28,15 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 const verifyPermission = ({ merchantId, username, sessionId }) => {
-  if (merchantId === '12345' && username === 'tri') {
+  const userDataFromSession = session.getUserDataFromSession(sessionId)
+  if (
+    userDataFromSession &&
+    merchantId === userDataFromSession.merchantId &&
+    username === userDataFromSession.username
+  ) {
     return true
   }
+  return false
 }
 
 // Forward verified requests to customisation backend
@@ -72,6 +78,14 @@ app.post('/api/login', function (req, res) {
   if (username === 'tri' && password === '12345') { // mock username & password
     const merchantId = '12345' // mock merchantId
     const sessionId = session.createNewSession({ username, merchantId })
+    return res.status(200).json({
+      sessionId,
+      merchantId,
+      username
+    })
+  }
+  const { merchantId, username: _username, sessionId } = req.cookies
+  if (verifyPermission({ merchantId, username: _username, sessionId })) {
     return res.status(200).json({
       sessionId,
       merchantId,
