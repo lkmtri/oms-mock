@@ -9,7 +9,7 @@ const PORT = 3003
 
 const session = new Session()
 
-const CUSTOMISATION_BACKEND_BASE_URL = 'http://localhost:3002/api'
+const CUSTOMISATION_BACKEND_BASE_URL = 'http://backend.customisation:3002/api'
 
 const GET = (url) => axios.get(url)
   .then(({ data }) => data)
