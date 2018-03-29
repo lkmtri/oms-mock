@@ -3,13 +3,13 @@ import axios from 'axios'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+import config from 'config'
 import Session from 'session'
-
-const PORT = 3003
 
 const session = new Session()
 
-const CUSTOMISATION_BACKEND_BASE_URL = 'http://backend.customisation:3002/api'
+const PORT = config.port
+const CUSTOMISATION_BACKEND_BASE_URL = config.customisationBackendBaseUrl
 
 const GET = (url) => axios.get(url)
   .then(({ data }) => data)
